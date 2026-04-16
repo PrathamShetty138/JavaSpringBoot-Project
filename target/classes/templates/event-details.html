@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:replace="~{layout :: layout (~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 animate-fade-in" style="border-radius: 20px;">
+                <div class="card-body p-5">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <span class="badge bg-info" style="font-size: 1rem; padding: 0.5rem 1.5rem;" th:text="${event.type}">Type</span>
+                        <span class="badge bg-light text-dark" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                            <i class="bi bi-people-fill"></i> <strong th:text="${event.rsvpCount}">0</strong> attending
+                        </span>
+                    </div>
+                    
+                    <h1 class="display-5 fw-bold mb-4" th:text="${event.title}">Event Title</h1>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-calendar3 text-primary fs-4"></i>
+                                <div class="mt-2">
+                                    <small class="text-muted d-block">Date</small>
+                                    <strong th:text="${event.date}">Date</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-clock text-primary fs-4"></i>
+                                <div class="mt-2">
+                                    <small class="text-muted d-block">Time</small>
+                                    <strong th:text="${event.time}">Time</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-geo-alt-fill text-primary fs-4"></i>
+                                <div class="mt-2">
+                                    <small class="text-muted d-block">Location</small>
+                                    <strong th:text="${event.location}">Location</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-person-circle text-primary fs-4"></i>
+                                <div class="mt-2">
+                                    <small class="text-muted d-block">Organizer</small>
+                                    <strong th:text="${event.createdBy.name}">Organizer</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-info-circle text-primary"></i> About This Event</h5>
+                        <p class="lead" th:text="${event.description}">Event description goes here</p>
+                    </div>
+                    
+                    <div sec:authorize="isAuthenticated()">
+                        <form th:if="${!hasRSVPd}" th:action="@{/events/{id}/rsvp(id=${event.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-check-circle"></i> RSVP to Event
+                            </button>
+                            <small class="text-muted d-block mt-2">
+                                <i class="bi bi-bell"></i> You'll receive a reminder 24 hours before the event
+                            </small>
+                        </form>
+                        
+                        <form th:if="${hasRSVPd}" th:action="@{/events/{id}/cancel-rsvp(id=${event.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="bi bi-x-circle"></i> Cancel RSVP
+                            </button>
+                            <small class="text-success d-block mt-2">
+                                <i class="bi bi-bell-fill"></i> Reminder is active - you'll be notified 24h before
+                            </small>
+                        </form>
+                        
+                        <form th:if="${#authentication.name == event.createdBy.email}" th:action="@{/events/{id}/delete(id=${event.id})}" method="post" class="d-inline ms-2">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">
+                                <i class="bi bi-trash"></i> Delete Event
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div sec:authorize="!isAuthenticated()" class="alert alert-info mt-3">
+                        <i class="bi bi-info-circle"></i> Please <a href="/login" class="fw-bold">login</a> to RSVP to this event.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 animate-fade-in" style="border-radius: 20px; animation-delay: 0.2s;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-people-fill text-primary"></i> 
+                        Attendees (<span th:text="${#lists.size(rsvps)}">0</span>)
+                    </h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <div th:each="rsvp : ${rsvps}" class="d-flex align-items-center mb-3 p-3 bg-light rounded">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                                 style="width: 45px; height: 45px; font-weight: bold; font-size: 1.1rem; margin-right: 15px;">
+                                <span th:text="${#strings.substring(rsvp.user.name, 0, 1)}">U</span>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div style="font-weight: 600; color: #2d3748; margin-bottom: 2px;" th:text="${rsvp.user.name}">User Name</div>
+                                <small class="text-muted"><i class="bi bi-check-circle-fill text-success"></i> Attending</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(rsvps)}" class="text-center py-5">
+                        <i class="bi bi-person-x" style="font-size: 3.5rem; color: #ddd;"></i>
+                        <p class="text-muted mt-3 mb-0" style="font-size: 0.95rem;">No attendees yet.<br>Be the first to RSVP!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="/" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Events
+        </a>
+    </div>
+</div>
+</body>
+</html>

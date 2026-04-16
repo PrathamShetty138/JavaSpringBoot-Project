@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout (~{::content})}">
+<body>
+<div th:fragment="content">
+    <!-- Hero Section with Stats -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="animate-fade-in" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 40px; color: white; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center mb-3">
+                            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 15px; margin-right: 20px;">
+                                <i class="bi bi-person-circle" style="font-size: 3rem;"></i>
+                            </div>
+                            <div>
+                                <h1 class="display-5 mb-2" style="font-weight: 700;">Welcome Back!</h1>
+                                <p class="lead mb-0" style="font-size: 1.2rem;">
+                                    <strong style="color: #FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.2);" th:text="${user.name}">User</strong> 
+                                    <span style="color: rgba(255,255,255,0.9);">•</span> 
+                                    <span style="color: white; font-weight: 500;" th:text="${user.email}">email@example.com</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 3rem; font-weight: 700;" th:text="${#lists.size(rsvps)}">0</div>
+                            <div style="font-size: 1.1rem; opacity: 0.9;">Events Registered</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 style="color: #2d3748; font-weight: 700;">
+                    <i class="bi bi-calendar-check" style="color: #667eea;"></i> My Upcoming Events
+                </h3>
+                <a href="/" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Find More Events
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Events Grid -->
+    <div th:if="${!#lists.isEmpty(rsvps)}" class="row g-4">
+        <div class="col-md-6 col-lg-4 animate-fade-in" th:each="rsvp, iterStat : ${rsvps}" th:style="'animation-delay: ' + ${iterStat.index * 0.1} + 's'">
+            <div class="card h-100" style="border: none; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)'">
+                <!-- Event Type Header -->
+                <div th:style="${rsvp.event.type == 'Sports' ? 'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);' : 
+                               rsvp.event.type == 'Cultural' ? 'background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);' :
+                               rsvp.event.type == 'Workshop' ? 'background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);' :
+                               'background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);'}" 
+                     style="padding: 15px 20px; color: white;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span style="background: rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem;">
+                            <span th:if="${rsvp.event.type == 'Sports'}">⚽</span>
+                            <span th:if="${rsvp.event.type == 'Cultural'}">🎭</span>
+                            <span th:if="${rsvp.event.type == 'Workshop'}">💡</span>
+                            <span th:if="${rsvp.event.type == 'Academic'}">📚</span>
+                            <span th:text="${rsvp.event.type}">Type</span>
+                        </span>
+                        <span style="background: rgba(255,255,255,0.3); padding: 6px 10px; border-radius: 20px; font-size: 0.85rem;">
+                            <i class="bi bi-check-circle-fill"></i> Registered
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Event Details -->
+                <div class="card-body" style="padding: 25px;">
+                    <h5 class="card-title fw-bold mb-3" style="color: #2d3748; font-size: 1.2rem;" th:text="${rsvp.event.title}">Event Title</h5>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                            <div style="background: #f7fafc; padding: 8px; border-radius: 8px; margin-right: 10px; width: 36px; text-align: center;">
+                                <i class="bi bi-calendar3" style="color: #667eea;"></i>
+                            </div>
+                            <span th:text="${rsvp.event.date}">Date</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                            <div style="background: #f7fafc; padding: 8px; border-radius: 8px; margin-right: 10px; width: 36px; text-align: center;">
+                                <i class="bi bi-clock" style="color: #667eea;"></i>
+                            </div>
+                            <span th:text="${rsvp.event.time}">Time</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                            <div style="background: #f7fafc; padding: 8px; border-radius: 8px; margin-right: 10px; width: 36px; text-align: center;">
+                                <i class="bi bi-geo-alt-fill" style="color: #667eea;"></i>
+                            </div>
+                            <span th:text="${rsvp.event.location}">Location</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Reminder Badge -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 15px;">
+                        <i class="bi bi-bell-fill"></i> Reminder set for 24 hours before
+                    </div>
+                    
+                    <!-- RSVP Date -->
+                    <div style="color: #718096; font-size: 0.85rem; margin-bottom: 15px;">
+                        <i class="bi bi-clock-history"></i> RSVP'd on <span th:text="${#temporals.format(rsvp.timestamp, 'MMM dd, yyyy')}">Date</span>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="card-footer" style="background: #f7fafc; border: none; padding: 20px;">
+                    <div class="d-grid gap-2">
+                        <a th:href="@{/events/{id}(id=${rsvp.event.id})}" class="btn btn-primary" style="border-radius: 10px;">
+                            <i class="bi bi-eye"></i> View Event Details
+                        </a>
+                        <form th:action="@{/events/{id}/cancel-rsvp(id=${rsvp.event.id})}" method="post">
+                            <button type="submit" class="btn btn-outline-danger w-100" style="border-radius: 10px;"
+                                    onclick="return confirm('Are you sure you want to cancel your RSVP?')">
+                                <i class="bi bi-x-circle"></i> Cancel RSVP
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Empty State -->
+    <div th:if="${#lists.isEmpty(rsvps)}" class="animate-fade-in">
+        <div style="background: white; border-radius: 20px; padding: 80px 40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <div style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 50%; margin-bottom: 30px;">
+                <i class="bi bi-calendar-x" style="font-size: 4rem; color: white;"></i>
+            </div>
+            <h3 style="color: #2d3748; font-weight: 700; margin-bottom: 15px;">No Events Yet</h3>
+            <p style="color: #718096; font-size: 1.1rem; max-width: 500px; margin: 0 auto 30px;">
+                You haven't RSVP'd to any events yet. Start exploring amazing events happening on campus!
+            </p>
+            <a href="/" class="btn btn-primary btn-lg" style="padding: 15px 40px; border-radius: 50px;">
+                <i class="bi bi-search"></i> Discover Events
+            </a>
+        </div>
+    </div>
+    
+    <!-- Quick Stats Cards -->
+    <div class="row mt-5 g-4">
+        <div class="col-md-4">
+            <div class="card animate-fade-in" style="border: none; border-radius: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3); animation-delay: 0.1s;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; margin-right: 15px;">
+                            <i class="bi bi-calendar-check" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0" th:text="${#lists.size(rsvps)}">0</h3>
+                            <small style="opacity: 0.9;">Total Events</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card animate-fade-in" style="border: none; border-radius: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; box-shadow: 0 5px 20px rgba(240, 147, 251, 0.3); animation-delay: 0.2s;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; margin-right: 15px;">
+                            <i class="bi bi-bell-fill" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0" th:text="${#lists.size(rsvps)}">0</h3>
+                            <small style="opacity: 0.9;">Active Reminders</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card animate-fade-in" style="border: none; border-radius: 15px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; box-shadow: 0 5px 20px rgba(67, 233, 123, 0.3); animation-delay: 0.3s;">
+                <div class="card-body p-4">
+                    <a href="/events/create" class="text-decoration-none text-white">
+                        <div class="d-flex align-items-center">
+                            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; margin-right: 15px;">
+                                <i class="bi bi-plus-circle" style="font-size: 2rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">Create Event</h5>
+                                <small style="opacity: 0.9;">Host your own</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout (~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 animate-fade-in" style="border-radius: 20px;">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-plus-circle" style="font-size: 3rem; color: #667eea;"></i>
+                        <h2 class="mt-3">Create New Event</h2>
+                        <p class="text-muted">Organize an amazing campus event</p>
+                    </div>
+                    
+                    <form th:action="@{/events/create}" method="post" th:object="${event}">
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label for="title" class="form-label">
+                                    <i class="bi bi-card-text"></i> Event Title
+                                </label>
+                                <input type="text" class="form-control" id="title" th:field="*{title}" 
+                                       placeholder="Enter event title" required>
+                                <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="type" class="form-label">
+                                    <i class="bi bi-tag"></i> Event Type
+                                </label>
+                                <select class="form-select" id="type" th:field="*{type}" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Sports">⚽ Sports</option>
+                                    <option value="Cultural">🎭 Cultural</option>
+                                    <option value="Workshop">💡 Workshop</option>
+                                    <option value="Academic">📚 Academic</option>
+                                </select>
+                                <div class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="date" class="form-label">
+                                    <i class="bi bi-calendar3"></i> Event Date
+                                </label>
+                                <input type="date" class="form-control" id="date" th:field="*{date}" required>
+                                <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="time" class="form-label">
+                                    <i class="bi bi-clock"></i> Event Time
+                                </label>
+                                <input type="time" class="form-control" id="time" th:field="*{time}" required>
+                                <div class="text-danger" th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="location" class="form-label">
+                                <i class="bi bi-geo-alt"></i> Location
+                            </label>
+                            <input type="text" class="form-control" id="location" th:field="*{location}" 
+                                   placeholder="Enter event location" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="description" class="form-label">
+                                <i class="bi bi-file-text"></i> Description
+                            </label>
+                            <textarea class="form-control" id="description" th:field="*{description}" rows="4" 
+                                      placeholder="Describe your event..."></textarea>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Create Event
+                            </button>
+                            <a href="/" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

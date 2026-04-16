@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:replace="~{layout :: layout (~{::content})}">
+<body>
+<div th:fragment="content">
+    <!-- Hero Section with Animated Background -->
+    <div class="hero-section animate-fade-in" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 80px 40px; margin-bottom: 40px; position: relative; overflow: hidden; box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);">
+        <!-- Animated Background Elements -->
+        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 6s ease-in-out infinite;"></div>
+        <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 8s ease-in-out infinite;"></div>
+        
+        <div class="text-center" style="position: relative; z-index: 1;">
+            <div style="display: inline-block; background: rgba(255,255,255,0.2); padding: 20px; border-radius: 50%; margin-bottom: 20px; backdrop-filter: blur(10px);">
+                <i class="bi bi-calendar-event" style="font-size: 4rem; color: white;"></i>
+            </div>
+            <h1 class="display-3 mb-3 fw-bold" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+                🎉 Campus Events Hub
+            </h1>
+            <p class="lead mb-4" style="color: rgba(255,255,255,0.95); font-size: 1.3rem; max-width: 700px; margin: 0 auto;">
+                Your gateway to amazing campus experiences! Discover, join, and create unforgettable moments.
+            </p>
+            <div sec:authorize="!isAuthenticated()" style="margin-top: 30px;">
+                <a href="/register" class="btn btn-light btn-lg me-3" style="padding: 15px 40px; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s;">
+                    <i class="bi bi-person-plus"></i> Join Now
+                </a>
+                <a href="/login" class="btn btn-outline-light btn-lg" style="padding: 15px 40px; border-radius: 50px; font-weight: 600; border: 2px solid white;">
+                    <i class="bi bi-box-arrow-in-right"></i> Sign In
+                </a>
+            </div>
+            <div sec:authorize="isAuthenticated()" style="margin-top: 30px;">
+                <a href="/events/create" class="btn btn-light btn-lg" style="padding: 15px 40px; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                    <i class="bi bi-plus-circle"></i> Create New Event
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+    </style>
+    
+    <!-- Search and Filter Section with Modern Design -->
+    <div class="animate-fade-in" style="background: white; border-radius: 15px; padding: 30px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-8">
+                <form method="get" action="/" class="d-flex gap-2">
+                    <div class="input-group" style="border-radius: 50px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <span class="input-group-text" style="background: #f8f9fa; border: none; padding-left: 20px;">
+                            <i class="bi bi-search" style="color: #667eea;"></i>
+                        </span>
+                        <input type="text" name="search" class="form-control" placeholder="Search events by title..." th:value="${searchQuery}" style="border: none; padding: 12px 20px; font-size: 1rem;">
+                        <button class="btn" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0 30px; font-weight: 600;">
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" onchange="window.location.href='/?type=' + this.value" style="border-radius: 50px; padding: 12px 20px; border: 2px solid #e9ecef; font-weight: 500;">
+                    <option value="">📋 All Categories</option>
+                    <option value="Sports" th:selected="${selectedType == 'Sports'}">⚽ Sports</option>
+                    <option value="Cultural" th:selected="${selectedType == 'Cultural'}">🎭 Cultural</option>
+                    <option value="Workshop" th:selected="${selectedType == 'Workshop'}">💡 Workshop</option>
+                    <option value="Academic" th:selected="${selectedType == 'Academic'}">📚 Academic</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats Section with Modern Badge -->
+    <div class="row mb-4 animate-fade-in" th:if="${!#lists.isEmpty(events)}">
+        <div class="col-md-12">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; padding: 20px 30px; display: flex; align-items-center; gap: 15px; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);">
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 50%; backdrop-filter: blur(10px);">
+                    <i class="bi bi-calendar-check" style="font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                    <h5 class="mb-1" style="font-weight: 700;">
+                        <span th:text="${#lists.size(events)}">0</span> Upcoming Events
+                    </h5>
+                    <p class="mb-0" style="opacity: 0.9; font-size: 0.95rem;">
+                        <span th:if="${selectedType != null}">in <strong th:text="${selectedType}">category</strong></span>
+                        <span th:if="${searchQuery != null}">matching "<strong th:text="${searchQuery}">query</strong>"</span>
+                        <span th:if="${selectedType == null && searchQuery == null}">Ready for you to explore!</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Events Grid with Enhanced Cards -->
+    <div class="row g-4">
+        <div class="col-md-4 mb-4 animate-fade-in" th:each="event, iterStat : ${events}" th:style="'animation-delay: ' + ${iterStat.index * 0.1} + 's'">
+            <div class="card h-100" style="background: white; border: none; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 50px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.1)'">
+                <!-- Colored Header based on type -->
+                <div th:style="${event.type == 'Sports' ? 'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);' : 
+                               event.type == 'Cultural' ? 'background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);' :
+                               event.type == 'Workshop' ? 'background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);' :
+                               'background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);'}" 
+                     style="padding: 20px; color: white;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span style="background: rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 50px; font-weight: 600; backdrop-filter: blur(10px);">
+                            <span th:if="${event.type == 'Sports'}">⚽</span>
+                            <span th:if="${event.type == 'Cultural'}">🎭</span>
+                            <span th:if="${event.type == 'Workshop'}">💡</span>
+                            <span th:if="${event.type == 'Academic'}">📚</span>
+                            <span th:text="${event.type}">Type</span>
+                        </span>
+                        <span style="background: rgba(255,255,255,0.3); padding: 8px 12px; border-radius: 50px; backdrop-filter: blur(10px);">
+                            <i class="bi bi-people-fill"></i> <strong th:text="${event.rsvpCount}">0</strong>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-body" style="padding: 25px;">
+                    <h5 class="card-title fw-bold mb-3" style="color: #2d3748; font-size: 1.3rem;" th:text="${event.title}">Event Title</h5>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2" style="color: #4a5568;">
+                            <div style="background: #edf2f7; padding: 8px; border-radius: 8px; margin-right: 12px;">
+                                <i class="bi bi-calendar3" style="color: #667eea;"></i>
+                            </div>
+                            <span th:text="${event.date}">Date</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2" style="color: #4a5568;">
+                            <div style="background: #edf2f7; padding: 8px; border-radius: 8px; margin-right: 12px;">
+                                <i class="bi bi-clock" style="color: #667eea;"></i>
+                            </div>
+                            <span th:text="${event.time}">Time</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2" style="color: #4a5568;">
+                            <div style="background: #edf2f7; padding: 8px; border-radius: 8px; margin-right: 12px;">
+                                <i class="bi bi-geo-alt-fill" style="color: #667eea;"></i>
+                            </div>
+                            <span th:text="${event.location}">Location</span>
+                        </div>
+                    </div>
+                    
+                    <p class="card-text text-muted" style="font-size: 0.95rem; line-height: 1.6;" th:text="${#strings.abbreviate(event.description, 100)}">Description</p>
+                </div>
+                
+                <div class="card-footer bg-transparent border-0" style="padding: 0 25px 25px;">
+                    <a th:href="@{/events/{id}(id=${event.id})}" class="btn w-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; transition: all 0.3s;">
+                        <i class="bi bi-arrow-right-circle"></i> View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Empty State with Modern Design -->
+    <div th:if="${#lists.isEmpty(events)}" class="text-center py-5 animate-fade-in">
+        <div style="background: white; border-radius: 20px; padding: 60px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <div style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 50%; margin-bottom: 30px;">
+                <i class="bi bi-calendar-x" style="font-size: 3rem; color: white;"></i>
+            </div>
+            <h3 class="mt-3 mb-3" style="color: #2d3748; font-weight: 700;">No Events Found</h3>
+            <p class="text-muted mb-4" style="font-size: 1.1rem; max-width: 500px; margin: 0 auto 30px;">
+                <span th:if="${searchQuery != null}">🔍 No events match your search. Try different keywords or clear filters.</span>
+                <span th:if="${searchQuery == null}">📅 There are no upcoming events at the moment. Be the first to create one!</span>
+            </p>
+            <div>
+                <a href="/" class="btn btn-outline-secondary me-2" th:if="${searchQuery != null || selectedType != null}" style="padding: 12px 30px; border-radius: 50px; font-weight: 600;">
+                    <i class="bi bi-arrow-left"></i> Clear Filters
+                </a>
+                <a href="/events/create" class="btn me-2" sec:authorize="isAuthenticated()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 600;">
+                    <i class="bi bi-plus-circle"></i> Create First Event
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout (~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="hero-section animate-fade-in text-center">
+                <i class="bi bi-info-circle" style="font-size: 4rem; color: #667eea;"></i>
+                <h1 class="display-4 mb-3">About Campus Event Tracker</h1>
+                <p class="lead">Your one-stop platform for discovering and managing campus events</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card shadow border-0 h-100 animate-fade-in" style="border-radius: 15px; animation-delay: 0.1s;">
+                        <div class="card-body p-4">
+                            <h3 class="card-title text-primary mb-3">
+                                <i class="bi bi-bullseye"></i> Our Mission
+                            </h3>
+                            <p class="card-text">
+                                Campus Event Tracker aims to centralize event management for college students, faculty, and organizers. 
+                                We make it easy to discover workshops, sports events, cultural programs, and club activities happening on campus.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card shadow border-0 h-100 animate-fade-in" style="border-radius: 15px; animation-delay: 0.2s;">
+                        <div class="card-body p-4">
+                            <h3 class="card-title text-primary mb-3">
+                                <i class="bi bi-people"></i> Who We Serve
+                            </h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle text-success"></i> College Students</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success"></i> Faculty Members</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success"></i> Event Organizers</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success"></i> Club Leaders</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow border-0 mt-4 animate-fade-in" style="border-radius: 15px; animation-delay: 0.3s;">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-primary mb-4">
+                        <i class="bi bi-star"></i> Key Features
+                    </h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-calendar-event text-primary fs-4 me-3"></i>
+                                <div>
+                                    <h5>Event Discovery</h5>
+                                    <p class="text-muted mb-0">Browse and search for upcoming campus events by type, date, and location.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-check-circle text-success fs-4 me-3"></i>
+                                <div>
+                                    <h5>Easy RSVP</h5>
+                                    <p class="text-muted mb-0">One-click RSVP system with attendance tracking and duplicate prevention.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-bell text-warning fs-4 me-3"></i>
+                                <div>
+                                    <h5>Smart Reminders</h5>
+                                    <p class="text-muted mb-0">Automatic email reminders sent 24 hours before your RSVP'd events.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-plus-circle text-info fs-4 me-3"></i>
+                                <div>
+                                    <h5>Event Creation</h5>
+                                    <p class="text-muted mb-0">Create and manage your own events with detailed information and attendee tracking.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-search text-secondary fs-4 me-3"></i>
+                                <div>
+                                    <h5>Advanced Search</h5>
+                                    <p class="text-muted mb-0">Filter events by type (Sports, Cultural, Workshop, Academic) and search by title.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-phone text-primary fs-4 me-3"></i>
+                                <div>
+                                    <h5>Mobile Friendly</h5>
+                                    <p class="text-muted mb-0">Responsive design that works perfectly on desktop, tablet, and mobile devices.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow border-0 mt-4 animate-fade-in" style="border-radius: 15px; animation-delay: 0.4s;">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-primary mb-4">
+                        <i class="bi bi-gear"></i> Technology Stack
+                    </h3>
+                    <div class="row g-3">
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-cup-hot text-warning fs-1"></i>
+                                <h6 class="mt-2 mb-0">Spring Boot</h6>
+                                <small class="text-muted">Backend Framework</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-shield-check text-success fs-1"></i>
+                                <h6 class="mt-2 mb-0">Spring Security</h6>
+                                <small class="text-muted">Authentication</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-database text-primary fs-1"></i>
+                                <h6 class="mt-2 mb-0">MySQL</h6>
+                                <small class="text-muted">Database</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-bootstrap text-purple fs-1"></i>
+                                <h6 class="mt-2 mb-0">Bootstrap 5</h6>
+                                <small class="text-muted">UI Framework</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <div class="card shadow border-0 animate-fade-in" style="border-radius: 15px; animation-delay: 0.5s;">
+                    <div class="card-body p-4">
+                        <h4 class="text-primary mb-3">Get Started Today!</h4>
+                        <p class="text-muted mb-4">Join thousands of students discovering amazing campus events</p>
+                        <div class="d-flex gap-2 justify-content-center flex-wrap">
+                            <a href="/register" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person-plus"></i> Create Account
+                            </a>
+                            <a href="/" class="btn btn-secondary btn-lg">
+                                <i class="bi bi-calendar-event"></i> Browse Events
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
